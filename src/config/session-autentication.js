@@ -3,8 +3,8 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 
-const UserDAO = require("../dao/user-dao");
-const db = require("./db");
+// const UserDAO = require("../dao/user-dao");
+// const db = require("./db");
 
 module.exports = app => {
   //configuracao da sessao e da autenticacao.
