@@ -6,7 +6,17 @@ module.exports = app => {
   const UserDAO = require("../dao/user-dao");
 
   app.get("/", function(req, resp) {
-    resp.send(`${db}`);
+    resp.send(
+      `<html>
+               <head>
+                   <meta charsert='utf-8'>
+                   </head>
+                   <body>
+                       
+                       <h1>Foi... teste </h1>
+                   </body>
+           </html>`
+    );
   });
 //   app.get("/musicas", function(req, resp) {
 //     const musicaDAO = new MusicaDAO(db);
