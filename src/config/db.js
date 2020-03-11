@@ -12,28 +12,24 @@ const item = {
   qtd: 0
 };
 
-mongo.connect(url, (err, client) => {
-  if (err) {
-    console.log(err);
-    return;
-  }
+listAll = async () =>
+  new Promise((resolve, reject) => {
+    mongo.connect(url, (err, client) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
 
-  const dataBase = client.db("LivrariaDB");
-  const collection = dataBase.collection("Produtos");
-  return listAll(collection);
-//  insertItem(dataBase, item);
-});
-
-listAll = (collection) => {
-  collection.find().toArray((err, items) => {
-    console.log(items);
-
-    return items;
+      const dataBase = client.db("LivrariaDB");
+      const collection = dataBase.collection("Produtos");
+      collection.find().toArray((err, items) => {
+        resolve(items);
+      });
+    });
   });
-};
 
 insertItem = bd => {
   bd.collection("Produtos").insertOne(item);
   console.log("item inserido.");
 };
-module.exports = mongo;
+module.exports = { listAll };

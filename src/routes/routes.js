@@ -1,22 +1,14 @@
 //rotas para GET, POST, UPDATE, DELETE
 module.exports = app => {
-  const db = require("../config/db");
+  const { listAll} = require("../config/db");
   //const MusicaDAO = require('../dao/musicas-dao');
   const { check, validationResult } = require("express-validator/check");
   const UserDAO = require("../dao/user-dao");
 
-  app.get("/", function(req, resp) {
-    resp.send(
-      `<html>
-               <head>
-                   <meta charsert='utf-8'>
-                   </head>
-                   <body>
-                       
-                       <h1>Foi... teste </h1>
-                   </body>
-           </html>`
-    );
+  app.get("/produtos", async function(req, resp) {
+    const lista = await listAll();
+    console.log(lista);
+    resp.send(lista);
   });
 //   app.get("/musicas", function(req, resp) {
 //     const musicaDAO = new MusicaDAO(db);
