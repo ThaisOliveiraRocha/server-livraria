@@ -12,7 +12,7 @@ const item = {
   qtd: 0
 };
 
-listAll = async () =>
+listAllProducts = async () =>
   new Promise((resolve, reject) => {
     mongo.connect(url, (err, client) => {
       if (err) {
@@ -28,8 +28,77 @@ listAll = async () =>
     });
   });
 
-insertItem = bd => {
-  bd.collection("Produtos").insertOne(item);
-  console.log("item inserido.");
+insertProduct = async item => {
+  new Promise((resolve, reject) => {
+    mongo.connect(url, (err, client) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const dataBase = client.db("LivrariaDB");
+      dataBase.collection("Produtos").insertOne(item);
+      console.log("item inserido com sucesso.");
+      resolve(item);
+    });
+  });
 };
-module.exports = { listAll };
+
+listUser = async email =>
+  new Promise((resolve, reject) => {
+    mongo.connect(url, (err, client) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      const dataBase = client.db("LivrariaDB");
+      dataBase.collection("Usuarios").findOne({ email }, function(err, result) {
+        if (err) throw err;
+        console.log(result);
+        resolve(JSON.stringify(result));
+        //dataBase.close();
+      });
+    });
+  });
+
+insertUser = async novoUser => {
+  new Promise((resolve, reject) => {
+    mongo.connect(url, (err, client) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const dataBase = client.db("LivrariaDB");
+      const collection = dataBase.collection("Usuarios");
+      collection.insertOne(novoUser);
+      console.log("usuário inserido com sucesso.");
+      resolve(novoUser);
+    });
+  });
+};
+
+deleteUser = async id => {
+  new Promise((resolve, reject) => {
+    mongo.connect(url, (err, client) => {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      const dataBase = client.db("LivrariaDB");
+      const collection = dataBase.collection("Usuarios");
+      collection.deleteOne(id, function(err, obj) {
+        if (err) throw err;
+        console.log(`${id} deletado com sucesso!`);
+        resolve("deletado.");
+      });
+    });
+  });
+};
+
+module.exports = {
+  listAllProducts,
+  insertProduct,
+  insertUser,
+  listUser,
+  deleteUser
+};
